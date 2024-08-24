@@ -1,15 +1,16 @@
+import 'package:dalel/core/errors/error_model.dart';
 import 'package:dio/dio.dart';
-import 'package:happytech_clean_architecture/core/errors/error_model.dart';
+
 
 //!ServerException
 class ServerException implements Exception {
   final ErrorModel errorModel;
   ServerException(this.errorModel);
 }
-//!CacheExeption
-class CacheExeption implements Exception {
+//!CacheException
+class CacheException implements Exception {
   final String errorMessage;
-  CacheExeption({required this.errorMessage});
+  CacheException({required this.errorMessage});
 }
 
 class BadCertificateException extends ServerException {

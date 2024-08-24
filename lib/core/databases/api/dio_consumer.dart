@@ -1,7 +1,8 @@
+import 'package:dalel/core/databases/api/api_consumer.dart';
+import 'package:dalel/core/databases/api/end_points.dart';
+import 'package:dalel/core/errors/exceptions.dart';
 import 'package:dio/dio.dart';
-import 'package:happytech_clean_architecture/core/databases/api/api_consumer.dart';
-import 'package:happytech_clean_architecture/core/databases/api/end_points.dart';
-import 'package:happytech_clean_architecture/core/errors/expentions.dart';
+
 
 class DioConsumer extends ApiConsumer {
   final Dio dio;
