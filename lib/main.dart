@@ -15,6 +15,7 @@ class DalelApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+
       routerConfig: router,
       debugShowCheckedModeBanner: false,
 

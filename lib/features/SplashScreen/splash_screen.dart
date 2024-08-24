@@ -1,10 +1,41 @@
+import 'package:dalel/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(color: Colors.red,width: 100,height: 100,);
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+
+  void initState() {
+    super.initState();
+    delayedNvigation();
   }
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('Dalel',
+        style: AppTextStyles.pacifico400style64,),
+      ),
+    );
+  }
+
+
+
+  Future<Null> delayedNvigation() {
+    return Future.delayed(const Duration(seconds: 3), () {
+      GoRouter.of(context).push('/onBoarding');
+    });
+  }
+
+
 }
