@@ -10,6 +10,17 @@ class AppTextStyles {
     fontSize: 64,
     color: AppColors.fontSecondaryColor,
   );
+
+  static const TextStyle poppins500style24 = TextStyle(
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+    fontSize: 24,
+    color: AppColors.fontPrimaryColor,
+  );
+
+
+
+
 }
 
 

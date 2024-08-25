@@ -114,6 +114,10 @@ flutter:
    - family: pacifico
      fonts:
        - asset: assets/fonts/Pacifico-Regular.ttf
+
+   - family: poppins
+     fonts:
+       - asset: assets/fonts/Poppins-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
@@ -128,3 +132,13 @@ flutter:
     - assets/images/
 
 
+
+
+flutter_native_splash:
+  color: "#ffffff"
+  image:
+
+
+  android_12:
+    image:
+    icon_background_color: "#ffffff"

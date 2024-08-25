@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<Null> delayedNvigation() {
     return Future.delayed(const Duration(seconds: 3), () {
-      GoRouter.of(context).push('/onBoarding');
+      GoRouter.of(context).pushReplacement('/onBoarding');
     });
   }
 
