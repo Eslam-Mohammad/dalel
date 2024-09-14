@@ -11,16 +11,17 @@ class CustomElevatedbtn extends StatelessWidget {
     return SizedBox(
       height: 56,
       width: double.infinity,
-      child: ElevatedButton(onPressed:onPressed ,
-          child:Text(text,
-            style: AppTextStyles.poppins500style24.copyWith(fontSize:18.0,color: Colors.white ),),
-      style: ElevatedButton.styleFrom(
+      child: ElevatedButton(
+        onPressed:onPressed ,
+        style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         backgroundColor: AppColors.primary,
 
       ),
+        child:Text(text,
+          style: AppTextStyles.poppins500style24.copyWith(fontSize:18.0,color: Colors.white ),),
       ),
     );
   }

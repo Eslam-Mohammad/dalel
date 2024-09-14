@@ -14,7 +14,7 @@ class CustomSmoothPageIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return SmoothPageIndicator(controller: pageController,
         count: 3,
-        effect: ExpandingDotsEffect(
+        effect: const ExpandingDotsEffect(
 
           spacing: 12.0,
           dotWidth: 10,

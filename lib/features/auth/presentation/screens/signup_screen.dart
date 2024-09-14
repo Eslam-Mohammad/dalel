@@ -1,9 +1,14 @@
 import 'package:dalel/core/constants/app_colors.dart';
 import 'package:dalel/core/constants/app_text_styles.dart';
+import 'package:dalel/core/services/service_locator_getit.dart';
 import 'package:dalel/core/widgets/custom_elevatedbtn.dart';
 import 'package:dalel/core/widgets/email_text_field.dart';
 import 'package:dalel/core/widgets/password_text_field.dart';
+import 'package:dalel/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:dalel/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpScreen extends StatelessWidget {
    SignUpScreen({super.key});
@@ -12,6 +17,15 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  Future<void> dispose(){
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    return Future.value(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,29 +47,41 @@ class SignUpScreen extends StatelessWidget {
                   const SizedBox(height: 40,),
                   //First Name Field
                   TextFormField(
+                    validator: (value){
+                      if(value!.isEmpty){
+                        return 'Please enter your first name';
+                      }
+                      return null;
+                    },
                     controller: firstNameController,
                     decoration: InputDecoration(
                       focusColor: AppColors.primary,
-                      labelStyle: TextStyle(color: AppColors.primary),
+                      labelStyle: const TextStyle(color: AppColors.primary),
                       labelText: "First Name",
 
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.primary,width: 2.0),),
-                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.primary,width: 2.0),),
-                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.primary,width: 2.0),),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: const BorderSide(color: AppColors.primary,width: 2.0),),
+                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: const BorderSide(color: AppColors.primary,width: 2.0),),
+                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: const BorderSide(color: AppColors.primary,width: 2.0),),
 
                     ),
                   ),
                   const SizedBox(height: 25,),
                   //Last Name Field
                   TextFormField(
+                    validator: (value){
+                      if(value!.isEmpty){
+                        return 'Please enter your last name';
+                      }
+                      return null;
+                    },
                     controller: lastNameController,
                     decoration: InputDecoration(
-                      labelStyle: TextStyle(color: AppColors.primary),
+                      labelStyle: const TextStyle(color: AppColors.primary),
                       labelText: "Last Name",
 
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.primary,width: 2.0),),
-                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.primary,width: 2.0),),
-                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.primary,width: 2.0),),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: const BorderSide(color: AppColors.primary,width: 2.0),),
+                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: const BorderSide(color: AppColors.primary,width: 2.0),),
+                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: const BorderSide(color: AppColors.primary,width: 2.0),),
 
 
                     ),
@@ -68,25 +94,60 @@ class SignUpScreen extends StatelessWidget {
                   CustomPasswordTextField(passwordController: passwordController, color: AppColors.primary),
                   const SizedBox(height: 25,),
                   //Terms and Conditions
-                  Row(
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                    return Row(
                     children: [
-                      Checkbox(value: false, onChanged: (value){}),
-                      SizedBox(width: 10,),
-                      Text("I agree to the terms and conditions",
+                      Checkbox(value:getIt<AuthCubit>().isAgreed, onChanged: (value){
+                        getIt<AuthCubit>().agreeToTerms(value!);
+
+
+                      }),
+                      const SizedBox(width: 10,),
+                      const Text("I agree to the terms and conditions",
                       ),
                     ],
-                  ),
+                  );
+  },
+),
                   const SizedBox(height: 60,),
                   //Sign Up Button
-                  CustomElevatedbtn(text: "Sign Up", onPressed: (){}),
+
+                  BlocConsumer<AuthCubit, AuthState>(
+                   listener: (context, state) {
+                      if(state is SignUpSuccess){
+                        GoRouter.of(context).pushReplacement("/signin");
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Verify your email")));
+                      }else if(state is SignUpFailed){
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                      }
+
+                    },
+                     builder: (context, state) {
+                     return state is SignUploading?
+                  const CircularProgressIndicator(color: AppColors.primary,):
+                     CustomElevatedbtn(text: "Sign Up", onPressed: (){
+                    if(formKey.currentState!.validate()){
+                      getIt<AuthCubit>().signUp(emailController.text, passwordController.text);
+
+
+                    }
+
+                  });
+  },
+),
+
+
                   const SizedBox(height: 15,),
                   //Already have an account
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Already have an account?",style: TextStyle(fontSize: 16.0),),
-                      SizedBox(width: 5,),
-                      TextButton(onPressed: (){}, child: Text("Sign In",style: TextStyle(color: AppColors.primary,fontSize: 16.0),)),
+                      const Text("Already have an account?",style: TextStyle(fontSize: 16.0),),
+                      const SizedBox(width: 5,),
+                       TextButton(onPressed: (){
+                        GoRouter.of(context).pushReplacement("/signin");
+                      }, child: const Text("Sign In",style: TextStyle(color: AppColors.primary,fontSize: 16.0),)),
                     ],
                   )
 

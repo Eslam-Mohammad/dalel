@@ -9,7 +9,7 @@ import 'package:dalel/features/OnBoarding/widgets/smooth_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 class OnBoardingScreen extends StatefulWidget {
-   OnBoardingScreen({super.key});
+   const OnBoardingScreen({super.key});
 
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
@@ -25,6 +25,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
+          
           children: [
             SkipButtonWidget(
                 size: size),
@@ -71,18 +72,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 text: "Next",
                               ),
                 ),
-
-
-
-
-
-
-
-
-
-
-
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
                 ],
               ),
       ),

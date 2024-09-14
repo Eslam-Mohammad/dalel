@@ -5,6 +5,7 @@ import 'package:dalel/core/widgets/email_text_field.dart';
 import 'package:dalel/core/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
    LoginScreen({super.key});
@@ -25,16 +26,19 @@ class LoginScreen extends StatelessWidget {
                Container(
                 height: 290,
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color:AppColors.primary,
                 ),
                   child: Stack(
                     children: [
                       Positioned(
-                        child: Text("Dalel",
-                        style: TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.bold),),
+
                         top: 120,
-                        left: size.width/2-40,),
+                        left: size.width/2-40,
+                        child: const Text("Dalel",
+                          style: TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.bold),),
+
+                      ),
                       Positioned(
                         top: 188,
                         left: 0,
@@ -68,7 +72,7 @@ class LoginScreen extends StatelessWidget {
                     //forget password
                     Row(
                       children: [
-                        Spacer(),
+                        const Spacer(),
                         InkWell(
                           onTap: (){},
                           child: Text("Forgot Password ?",
@@ -84,9 +88,11 @@ class LoginScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Don't have an account ?",style: TextStyle(fontSize: 16.0),),
-                        SizedBox(width: 5,),
-                        TextButton(onPressed: (){}, child: Text("Sign Up",style: TextStyle(color: AppColors.primary,fontSize: 16.0),)),
+                        const Text("Don't have an account ?",style: TextStyle(fontSize: 16.0),),
+                        const SizedBox(width: 5,),
+                        TextButton(onPressed: (){
+                          GoRouter.of(context).pushReplacement("/signup");
+                        }, child: const Text("Sign Up",style: TextStyle(color: AppColors.primary,fontSize: 16.0),)),
                       ],
                     )
               

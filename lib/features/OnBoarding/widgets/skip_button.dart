@@ -15,10 +15,10 @@ class SkipButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Spacer(),
+        const Spacer(),
         Padding(
           padding: EdgeInsets.only(
-            top: size.height * 0.1,
+            top: size.height * 0.08,
             right: isArabic ? size.width * 0.2 : 0,
             left: isArabic ? 0 : size.width * 0.2,
           ),
