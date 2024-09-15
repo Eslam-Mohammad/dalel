@@ -1,4 +1,5 @@
 import 'package:dalel/core/constants/app_text_styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    delayedNvigation();
+    delayedNavigation();
   }
 
 
@@ -31,9 +32,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
 
-  Future<Null> delayedNvigation() {
+  Future<Null> delayedNavigation() {
     return Future.delayed(const Duration(seconds: 3), () {
-      GoRouter.of(context).pushReplacement('/onBoarding');
+      if(FirebaseAuth.instance.currentUser != null)
+      {
+        if(FirebaseAuth.instance.currentUser!.emailVerified){
+          GoRouter.of(context).pushReplacement('/home');
+        }
+        else{
+        GoRouter.of(context).pushReplacement('/signin');
+        }
+      }
+      else
+      {
+        GoRouter.of(context).pushReplacement('/onBoarding');
+      }
     });
   }
 

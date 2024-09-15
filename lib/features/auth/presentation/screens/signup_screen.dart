@@ -1,11 +1,12 @@
 import 'package:dalel/core/constants/app_colors.dart';
 import 'package:dalel/core/constants/app_text_styles.dart';
-import 'package:dalel/core/services/service_locator_getit.dart';
+
 import 'package:dalel/core/widgets/custom_elevatedbtn.dart';
 import 'package:dalel/core/widgets/email_text_field.dart';
 import 'package:dalel/core/widgets/password_text_field.dart';
 import 'package:dalel/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:dalel/features/auth/presentation/cubit/auth_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -23,12 +24,25 @@ class SignUpScreen extends StatelessWidget {
     lastNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
-    return Future.value(true);
+    return Future.value(null);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) async{
+        if(state is SignUpSuccess){
+
+          GoRouter.of(context).pushReplacement('/signin');
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Verify your account"),backgroundColor: Colors.red,));
+          await FirebaseAuth.instance.signOut();
+        }else if (state is SignUpFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message),backgroundColor: Colors.red,));
+        }
+
+        },
+      builder: (context, state) {
+       return Scaffold(
       body:Form(
         key: formKey,
         child: Padding(
@@ -94,12 +108,10 @@ class SignUpScreen extends StatelessWidget {
                   CustomPasswordTextField(passwordController: passwordController, color: AppColors.primary),
                   const SizedBox(height: 25,),
                   //Terms and Conditions
-                  BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                    return Row(
+                  Row(
                     children: [
-                      Checkbox(value:getIt<AuthCubit>().isAgreed, onChanged: (value){
-                        getIt<AuthCubit>().agreeToTerms(value!);
+                      Checkbox(value:AuthCubit.get(context).isAgreed, onChanged: (value){
+                        AuthCubit.get(context).agreeToTerms(value!);
 
 
                       }),
@@ -107,35 +119,20 @@ class SignUpScreen extends StatelessWidget {
                       const Text("I agree to the terms and conditions",
                       ),
                     ],
-                  );
-  },
-),
+                  ),
                   const SizedBox(height: 60,),
                   //Sign Up Button
-
-                  BlocConsumer<AuthCubit, AuthState>(
-                   listener: (context, state) {
-                      if(state is SignUpSuccess){
-                        GoRouter.of(context).pushReplacement("/signin");
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Verify your email")));
-                      }else if(state is SignUpFailed){
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
-                      }
-
-                    },
-                     builder: (context, state) {
-                     return state is SignUploading?
-                  const CircularProgressIndicator(color: AppColors.primary,):
+                    state is SignUploading?
+                    const CircularProgressIndicator(color: AppColors.primary,):
                      CustomElevatedbtn(text: "Sign Up", onPressed: (){
-                    if(formKey.currentState!.validate()){
-                      getIt<AuthCubit>().signUp(emailController.text, passwordController.text);
+              if(formKey.currentState!.validate()&&AuthCubit.get(context).isAgreed!){
+                AuthCubit.get(context).signUp(emailController.text, passwordController.text);
 
 
-                    }
+              }
 
-                  });
-  },
-),
+            }),
+                  
 
 
                   const SizedBox(height: 15,),
@@ -158,5 +155,7 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
+  },
+);
   }
 }

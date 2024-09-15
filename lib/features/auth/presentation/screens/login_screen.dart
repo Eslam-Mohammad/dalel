@@ -1,9 +1,14 @@
 import 'package:dalel/core/constants/app_colors.dart';
 import 'package:dalel/core/constants/app_text_styles.dart';
+
 import 'package:dalel/core/widgets/custom_elevatedbtn.dart';
 import 'package:dalel/core/widgets/email_text_field.dart';
 import 'package:dalel/core/widgets/password_text_field.dart';
+import 'package:dalel/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:dalel/features/auth/presentation/cubit/auth_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -74,7 +79,9 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         const Spacer(),
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            GoRouter.of(context).pushReplacement("/resetPassword");
+                          },
                           child: Text("Forgot Password ?",
                             style: AppTextStyles.poppins500style24.copyWith(color: AppColors.fontSecondaryColor,fontSize: 16.0),),
                         ),
@@ -82,7 +89,37 @@ class LoginScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 100,),
                     //Login Button
-                    CustomElevatedbtn(text: "Sign In", onPressed: (){}),
+                    
+                    BlocConsumer<AuthCubit, AuthState>(
+                         listener: (context, state) {
+                            if(state is SignInSuccess)
+                            {
+                              if(FirebaseAuth.instance.currentUser!.emailVerified) {
+                                GoRouter.of(context).pushReplacement("/home");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Sign In Success"),backgroundColor: Colors.green,));
+                              }else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Verify your account"),backgroundColor: Colors.red,));
+                                FirebaseAuth.instance.signOut();
+                              }
+
+                            } else if(state is SignInFailed) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                            }
+                            },
+                           builder: (context, state) {
+                    return state is SignInLoading ? const CircularProgressIndicator() :
+                      CustomElevatedbtn(text: "Sign In", onPressed: ()async{
+                     if(formKey.currentState!.validate()){
+                        AuthCubit.get(context).signIn(emailController.text, passwordController.text);
+
+                     }
+
+
+                    });
+  },
+),
                     const SizedBox(height: 15,),
                     //Don't have an account
                     Row(

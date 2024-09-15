@@ -1,9 +1,10 @@
-import 'package:dalel/core/services/service_locator_getit.dart';
 import 'package:dalel/features/OnBoarding/on_boarding_screen.dart';
 import 'package:dalel/features/SplashScreen/splash_screen.dart';
 import 'package:dalel/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:dalel/features/auth/presentation/screens/login_screen.dart';
+import 'package:dalel/features/auth/presentation/screens/reset_password.dart';
 import 'package:dalel/features/auth/presentation/screens/signup_screen.dart';
+import 'package:dalel/features/home/presentation/pages/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,13 +16,13 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/onBoarding',
-      builder: (context, state) => OnBoardingScreen(),
+      builder: (context, state) => const OnBoardingScreen(),
     ),
     GoRoute(
       path: '/signin',
       builder: (context, state) =>
           BlocProvider(
-            create: (context) => getIt<AuthCubit>(),
+            create: (context) => AuthCubit(),
             child: LoginScreen(),
           ),
     ),
@@ -29,8 +30,21 @@ final GoRouter router = GoRouter(
       path: '/signup',
       builder: (context, state) =>
           BlocProvider(
-            create: (context) => getIt<AuthCubit>(),
+            create: (context) => AuthCubit(),
             child: SignUpScreen(),
           ),
     ),
+    GoRoute(
+      path: "/home",
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: "/resetPassword",
+      builder: (context, state) =>
+          BlocProvider(
+            create: (context) => AuthCubit(),
+            child: ResetPassword(),
+          ),
+    ),
+
   ],);
