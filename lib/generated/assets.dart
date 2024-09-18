@@ -4,6 +4,7 @@ class Assets {
 
   static const String fontsPacificoRegular = 'assets/fonts/Pacifico-Regular.ttf';
   static const String fontsPoppinsRegular = 'assets/fonts/Poppins-Regular.ttf';
+  static const String imagesAncientEgypt = 'assets/images/ancientEgypt.png';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesBuildingvec = 'assets/images/buildingvec.svg';
   static const String imagesDalel = 'assets/images/Dalel.svg';
@@ -11,6 +12,7 @@ class Assets {
   static const String imagesFrame1 = 'assets/images/Frame 1.svg';
   static const String imagesFrame2 = 'assets/images/Frame 2.svg';
   static const String imagesFrame3 = 'assets/images/Frame 3.svg';
+  static const String imagesIslamicEra = 'assets/images/islamicera.png';
   static const String imagesPyramidsvec = 'assets/images/pyramidsvec.svg';
   static const String imagesResetpass = 'assets/images/resetpass.png';
   static const String imagesSuccesordericon = 'assets/images/Succes order icon.svg';

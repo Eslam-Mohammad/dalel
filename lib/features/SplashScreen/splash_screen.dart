@@ -37,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if(FirebaseAuth.instance.currentUser != null)
       {
         if(FirebaseAuth.instance.currentUser!.emailVerified){
+
           GoRouter.of(context).pushReplacement('/home');
         }
         else{

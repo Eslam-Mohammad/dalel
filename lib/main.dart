@@ -1,8 +1,10 @@
 
+import 'package:dalel/core/databases/cache/cache_helper.dart';
 import 'package:dalel/core/routes/app_router.dart';
 import 'package:dalel/core/services/bloc_observer.dart';
 import 'package:dalel/core/services/service_locator_getit.dart';
 import 'package:dalel/core/theme/app_theme.dart';
+import 'package:dalel/features/home/presentation/manager/home_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -41,7 +43,7 @@ void main()async {
   });
 
   Bloc.observer = const AppBlocObserver();
-
+  CacheHelper.init();
 
   setup();
 
@@ -54,14 +56,22 @@ class DalelApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: themeDataLight ,
+    return MultiBlocProvider(
+      providers: [
+         BlocProvider<HomeCubit>(
+           create: (context) => HomeCubit()..getHistoricalCharacters()..getHistoricalSouvenirs(),
+         ),
+      ],
+      child: MaterialApp.router(
 
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
+        theme: themeDataLight ,
+
+        routerConfig: router,
+        debugShowCheckedModeBanner: false,
 
 
 
+      ),
     );
   }
 }

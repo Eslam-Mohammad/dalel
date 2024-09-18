@@ -127,7 +127,7 @@ class SignUpScreen extends StatelessWidget {
                      CustomElevatedbtn(text: "Sign Up", onPressed: (){
               if(formKey.currentState!.validate()&&AuthCubit.get(context).isAgreed!){
                 AuthCubit.get(context).signUp(emailController.text, passwordController.text);
-
+                 AuthCubit.get(context).addUserInfo(firstNameController.text, lastNameController.text, emailController.text);
 
               }
 

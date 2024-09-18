@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dalel/features/auth/presentation/cubit/auth_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,6 +103,18 @@ void signIn(String email, String password) async{
 
   }
 
+
+void addUserInfo(String firstName, String lastName ,String email){
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  users.add({
+    'firstName': firstName,
+    'lastName': lastName,
+    'email': email,
+  })
+      .then((value) => print("User Added"))
+      .catchError((error) => print("Failed to add user: $error"));
+
+}
 
 
 

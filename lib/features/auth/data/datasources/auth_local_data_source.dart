@@ -13,7 +13,7 @@ class AuthLocalDataSource {
 
   cacheAuth(AuthModel? authToCache) {
     if (authToCache != null) {
-      cache.saveData(
+      CacheHelper.saveData(
         key: key,
         value: json.encode(
           authToCache.toJson(),
@@ -25,7 +25,7 @@ class AuthLocalDataSource {
   }
 
   Future<AuthModel> getLastAuth() {
-    final jsonString = cache.getDataString(key: key);
+    final jsonString = CacheHelper.getDataString(key: key);
 
     if (jsonString != null) {
       return Future.value(AuthModel.fromJson(json.decode(jsonString)));

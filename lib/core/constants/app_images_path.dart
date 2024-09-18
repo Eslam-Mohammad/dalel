@@ -10,4 +10,6 @@ class Assets {
   static const String imagesVector1 = 'assets/images/Vector 1.svg';
   static const String imagesVector2 = 'assets/images/Vector 2.svg';
   static const String imagelabel = 'assets/images/Dalel.svg';
+  static const String imagesAncientEgypt = 'assets/images/ancientEgypt.png';
+  static const String imagesIslamicEra = 'assets/images/islamicera.png';
 }

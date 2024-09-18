@@ -4,6 +4,7 @@ import 'package:dalel/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:dalel/features/auth/presentation/screens/login_screen.dart';
 import 'package:dalel/features/auth/presentation/screens/reset_password.dart';
 import 'package:dalel/features/auth/presentation/screens/signup_screen.dart';
+import 'package:dalel/features/home/presentation/manager/home_cubit.dart';
 import 'package:dalel/features/home/presentation/pages/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -36,7 +37,8 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: "/home",
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) =>
+          HomeScreen(),
     ),
     GoRoute(
       path: "/resetPassword",
